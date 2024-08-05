@@ -29,7 +29,7 @@ public class CategoryController {
     private final ICategoryService categoryService;
     @GetMapping("/all")
     public ResponseEntity<ApiResponse> findAll(){
-        logAction(String.format("Request for getting all categories"));
+//        logAction(String.format("Request for getting all categories"));
         try{
             return ResponseEntity.ok(new ApiResponse(true,"Categories fetched successfully",categoryService.getAllCategories()));
         }catch (Exception e){

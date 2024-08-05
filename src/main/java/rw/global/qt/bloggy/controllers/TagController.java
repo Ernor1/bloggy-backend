@@ -29,7 +29,7 @@ public class TagController {
     private final ITagService tagService;
     @GetMapping("/all")
     public ResponseEntity<ApiResponse> findAll(){
-        logAction(String.format("Request for getting all tags"));
+//        logAction(String.format("Request for getting all tags"));
         try{
             return ResponseEntity.ok(new ApiResponse(true,"Tags fetched successfully",tagService.getAllTags()));
         }catch (Exception e){
