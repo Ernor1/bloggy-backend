@@ -29,7 +29,7 @@ public class CommentController {
     private final ICommentService commentService;
     @GetMapping("/all")
     public ResponseEntity<ApiResponse> findAll(){
-        logAction(String.format("Request for getting all comments"));
+//        logAction(String.format("Request for getting all comments"));
         try{
             return ResponseEntity.ok(new ApiResponse(true,"Comments fetched successfully",commentService.getAllComments()));
         }catch (Exception e){
@@ -84,7 +84,7 @@ public class CommentController {
     }
     @GetMapping("/getByBlog/{id}")
     public ResponseEntity<ApiResponse> getCommentsByBlogId( @PathVariable("id") UUID id){
-        logAction(String.format("Request for getting all comments of a Blog with ID:  %s", id));
+//        logAction(String.format("Request for getting all comments of a Blog with ID:  %s", id));
         try{
             return ResponseEntity.ok(new ApiResponse(true,"Comments fetched successfully",commentService.getCommentByBlog(id)));
         }catch (Exception e){

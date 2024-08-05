@@ -56,7 +56,7 @@ public class BlogController {
     }
     @GetMapping("/get/{id}")
     public ResponseEntity<ApiResponse> getBlogById( @PathVariable("id") UUID id){
-        logAction(String.format("Request for getting a Blog with ID:  %s", id));
+//        logAction(String.format("Request for getting a Blog with ID:  %s", id));
         try{
             return ResponseEntity.ok(new ApiResponse(true,"Blog fetched successfully",blogService.getBlogById(id)));
         }catch (Exception e){
