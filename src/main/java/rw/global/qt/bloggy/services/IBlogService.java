@@ -16,6 +16,6 @@ public interface IBlogService {
     public List<Blog> getBlogByTitle(String title);
     public List<Blog> getBlogByCategory(UUID category);
     public List<Blog> getBlogByTag(UUID tag);
-    public List<Blog> getBlogByAuthor(UUID author);
+    public List<Blog> getBlogByAuthor(String author);
     public List<Blog> getBlogByPublished(boolean published);
 }

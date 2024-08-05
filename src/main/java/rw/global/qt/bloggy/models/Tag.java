@@ -22,7 +22,7 @@ public class Tag extends Initializer {
     private UUID id;
     private String name;
     private String description;
-    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Blog> blogs;
     public Tag(String name, String description){

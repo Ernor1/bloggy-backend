@@ -13,4 +13,5 @@ public interface ITagService {
     public void deleteTag(UUID id);
     public Tag getTagByName(String name);
     public List<Tag> getAllTags();
+    public List<Tag> getTagsByBlog(UUID blogId);
 }

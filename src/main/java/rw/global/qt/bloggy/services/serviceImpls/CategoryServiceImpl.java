@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import rw.global.qt.bloggy.dtos.requests.CreateCategoryDTO;
 import rw.global.qt.bloggy.exceptions.ResourceNotFoundException;
+import rw.global.qt.bloggy.models.Blog;
 import rw.global.qt.bloggy.models.Category;
+import rw.global.qt.bloggy.repositories.IBlogRepository;
 import rw.global.qt.bloggy.repositories.ICategoryRepository;
 import rw.global.qt.bloggy.services.ICategoryService;
 import rw.global.qt.bloggy.utils.ExceptionUtils;
@@ -16,6 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CategoryServiceImpl implements ICategoryService {
     private final ICategoryRepository categoryRepository;
+    private  final IBlogRepository blogRepository;
     @Override
     public Category createCategory(CreateCategoryDTO category) {
         try{
@@ -78,6 +81,17 @@ public class CategoryServiceImpl implements ICategoryService {
         try {
             return categoryRepository.findAll();
         } catch (Exception e) {
+            ExceptionUtils.handleServiceExceptions(e);
+            return null;
+        }
+    }
+
+    @Override
+    public List<Category> getCategoriesByBlog(UUID blogId) {
+        try{
+            Blog blog = blogRepository.findById(blogId).orElseThrow(() -> new ResourceNotFoundException("Blog not found"));
+            return categoryRepository.findAllByBlogsContaining(blog);
+        }catch (Exception e){
             ExceptionUtils.handleServiceExceptions(e);
             return null;
         }

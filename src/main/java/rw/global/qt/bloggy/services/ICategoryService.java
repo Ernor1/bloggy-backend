@@ -13,4 +13,5 @@ public interface ICategoryService {
     public void deleteCategory(UUID id);
     public Category getCategoryByName(String name);
     public List<Category> getAllCategories();
+    public List<Category> getCategoriesByBlog(UUID blogId);
 }

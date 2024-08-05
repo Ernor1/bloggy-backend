@@ -36,6 +36,15 @@ public class CategoryController {
             return ExceptionUtils.handleControllerExceptions(e);
         }
     }
+    @GetMapping("all/by-blog/{id}")
+    public ResponseEntity<ApiResponse> findAllByBlog(@PathVariable("id") UUID id){
+        logAction(String.format("Request for getting all categories by Blog ID:  %s", id));
+        try{
+            return ResponseEntity.ok(new ApiResponse(true,"Categories fetched successfully",categoryService.getCategoriesByBlog(id)));
+        }catch (Exception e){
+            return ExceptionUtils.handleControllerExceptions(e);
+        }
+    }
     @PostMapping("/create")
     public ResponseEntity<ApiResponse> createCategory(@Valid @RequestBody CreateCategoryDTO createCategoryDTO){
         logAction(String.format("Request for creating a Category with Name:  %s", createCategoryDTO.getName()));

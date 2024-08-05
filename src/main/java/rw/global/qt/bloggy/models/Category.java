@@ -22,7 +22,7 @@ public class Category extends Initializer {
     private UUID id;
     private String name;
     private String description;
-    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Blog> blogs;
     public Category(String name, String description){

@@ -63,7 +63,7 @@ public class BlogController {
             return ExceptionUtils.handleControllerExceptions(e);
         }
     }
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse> deleteBlogById(@PathVariable("id") UUID id){
         logAction(String.format("Request for deleting a Blog with ID:  %s", id));
         try{
@@ -83,18 +83,18 @@ public class BlogController {
             return ExceptionUtils.handleControllerExceptions(e);
         }
     }
-    @GetMapping("/get/by-author/{id}")
-    public ResponseEntity<ApiResponse> getBlogsByAuthor(@PathVariable("id") UUID id){
-        logAction(String.format("Request for getting all blogs by author with ID:  %s", id));
+    @GetMapping("/get/by-author/{name}")
+    public ResponseEntity<ApiResponse> getBlogsByAuthor(@PathVariable("name")  String name){
+        logAction(String.format("Request for getting all blogs by author with ID:  %s", name));
         try{
-            return ResponseEntity.ok(new ApiResponse(true,"Blogs fetched successfully",blogService.getBlogByAuthor(id)));
+            return ResponseEntity.ok(new ApiResponse(true,"Blogs fetched successfully",blogService.getBlogByAuthor(name)));
         }catch (Exception e){
             return ExceptionUtils.handleControllerExceptions(e);
         }
     }
     @GetMapping("/get/by-category/{id}")
     public ResponseEntity<ApiResponse> getBlogsByCategory(@PathVariable("id") UUID id){
-        logAction(String.format("Request for getting all blogs by category with ID:  %s", id));
+//        logAction(String.format("Request for getting all blogs by category with ID:  %s", id));
         try{
             return ResponseEntity.ok(new ApiResponse(true,"Blogs fetched successfully",blogService.getBlogByCategory(id)));
         }catch (Exception e){
@@ -103,7 +103,7 @@ public class BlogController {
     }
     @GetMapping("/get/by-tag/{id}")
     public ResponseEntity<ApiResponse> getBlogsByTag(@PathVariable("id") UUID id){
-        logAction(String.format("Request for getting all blogs by tag with ID:  %s", id));
+//        logAction(String.format("Request for getting all blogs by tag with ID:  %s", id));
         try{
             return ResponseEntity.ok(new ApiResponse(true,"Blogs fetched successfully",blogService.getBlogByTag(id)));
         }catch (Exception e){

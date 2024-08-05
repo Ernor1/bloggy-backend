@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import rw.global.qt.bloggy.dtos.requests.CreateTagDTO;
 import rw.global.qt.bloggy.exceptions.ResourceNotFoundException;
+import rw.global.qt.bloggy.models.Blog;
 import rw.global.qt.bloggy.models.Tag;
+import rw.global.qt.bloggy.repositories.IBlogRepository;
 import rw.global.qt.bloggy.repositories.ITagRepository;
 import rw.global.qt.bloggy.services.ITagService;
 import rw.global.qt.bloggy.utils.ExceptionUtils;
@@ -16,6 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class TagServiceImpl implements ITagService {
     private final ITagRepository tagRepository;
+    private final IBlogRepository blogRepository;
     @Override
     public Tag createTag(CreateTagDTO tag) {
        try {
@@ -81,4 +84,16 @@ public class TagServiceImpl implements ITagService {
             return null;
         }
     }
+
+    @Override
+    public List<Tag> getTagsByBlog(UUID blogId) {
+        try {
+            Blog blog = blogRepository.findById(blogId).orElseThrow(() -> new ResourceNotFoundException("Blog not found"));
+            return tagRepository.findAllByBlogsContaining(blog);
+        }catch (Exception e){
+            ExceptionUtils.handleServiceExceptions(e);
+            return null;
+        }
+    }
+
 }

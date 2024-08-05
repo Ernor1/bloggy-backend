@@ -25,7 +25,7 @@ public class Blog extends Initializer {
     private String content;
     @ManyToOne
     private User author;
-    @OneToMany
+    @OneToMany(mappedBy = "blog",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Comment> comments;
     @ManyToMany(fetch = FetchType.LAZY)

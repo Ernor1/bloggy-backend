@@ -36,6 +36,15 @@ public class TagController {
             return ExceptionUtils.handleControllerExceptions(e);
         }
     }
+    @GetMapping("all/by-blog/{id}")
+    public ResponseEntity<ApiResponse> findAllByBlog(@PathVariable("id") UUID id){
+        logAction(String.format("Request for getting all tags by Blog ID:  %s", id));
+        try{
+            return ResponseEntity.ok(new ApiResponse(true,"Tags fetched successfully",tagService.getTagsByBlog(id)));
+        }catch (Exception e){
+            return ExceptionUtils.handleControllerExceptions(e);
+        }
+    }
     @PostMapping("/create")
     public ResponseEntity<ApiResponse> createTag(@Valid @RequestBody CreateTagDTO createTagDTO){
         logAction(String.format("Request for creating a Tag with Name:  %s", createTagDTO.getName()));
