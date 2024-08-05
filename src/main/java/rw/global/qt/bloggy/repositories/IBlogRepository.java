@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import rw.global.qt.bloggy.models.Blog;
 import rw.global.qt.bloggy.models.Category;
 import rw.global.qt.bloggy.models.Tag;
+import rw.global.qt.bloggy.models.User;
 
 import java.util.List;
 import java.util.UUID;
@@ -14,4 +15,6 @@ public interface IBlogRepository extends JpaRepository<Blog, UUID>{
     List<Blog> findAllByTitle(String title);
     List<Blog> findAllByCategoriesContains(Category category);
     List<Blog> findAllByTagsContains(Tag tag);
+    List<Blog> findAllByPublished(boolean published);
+    List<Blog> findAllByAuthor(User user);
 }

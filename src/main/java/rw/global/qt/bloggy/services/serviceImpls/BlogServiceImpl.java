@@ -110,4 +110,24 @@ public class BlogServiceImpl implements IBlogService {
             return null;
         }
     }
+
+    @Override
+    public List<Blog> getBlogByAuthor(UUID author) {
+        try {
+            return blogRepository.findAllByAuthor(userRepository.findById(author).orElseThrow(() -> new ResourceNotFoundException("User not found")));
+        } catch (Exception e) {
+            ExceptionUtils.handleServiceExceptions(e);
+            return null;
+        }
+    }
+
+    @Override
+    public List<Blog> getBlogByPublished(boolean published) {
+        try {
+            return blogRepository.findAllByPublished(published);
+        } catch (Exception e) {
+            ExceptionUtils.handleServiceExceptions(e);
+            return null;
+        }
+    }
 }

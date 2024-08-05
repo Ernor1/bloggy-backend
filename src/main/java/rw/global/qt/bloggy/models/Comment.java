@@ -20,6 +20,8 @@ public class Comment extends Initializer {
     private UUID id;
     private String content;
     @ManyToOne
+    private Blog blog;
+    @ManyToOne
     private User user;
     public Comment(String content, User user){
         this.content = content;
