@@ -7,15 +7,19 @@ import rw.global.qt.bloggy.dtos.requests.CreateBlogDTO;
 import rw.global.qt.bloggy.exceptions.ResourceNotFoundException;
 import rw.global.qt.bloggy.models.Blog;
 import rw.global.qt.bloggy.models.Category;
+import rw.global.qt.bloggy.models.Tag;
 import rw.global.qt.bloggy.models.User;
 import rw.global.qt.bloggy.repositories.IBlogRepository;
 import rw.global.qt.bloggy.repositories.ICategoryRepository;
 import rw.global.qt.bloggy.repositories.ITagRepository;
 import rw.global.qt.bloggy.repositories.IUserRepository;
 import rw.global.qt.bloggy.services.IBlogService;
+import rw.global.qt.bloggy.services.IUserService;
 import rw.global.qt.bloggy.utils.ExceptionUtils;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -26,13 +30,47 @@ public class BlogServiceImpl implements IBlogService {
     private final IUserRepository userRepository;
     private final ICategoryRepository categoryRepository;
     private final ITagRepository tagRepository;
+    private final IUserService userService;
     @Override
     public Blog createBlog(CreateBlogDTO blog) {
         try {
             User author = userRepository.findById(blog.getUserId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+            Set<Category> categories= new HashSet<>();
+            Set<Tag> tags= new HashSet<>();
+            for (UUID categoryId:blog.getCategories()){
+                categories.add(categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category not found")));
+            }
+            for (UUID tagId:blog.getTags()){
+                tags.add(tagRepository.findById(tagId).orElseThrow(() -> new ResourceNotFoundException("Tag not found")));
+            }
             Blog newBlog = new Blog(blog.getTitle(), blog.getContent(),author);
+            newBlog.setCategories(categories);
+            newBlog.setTags(tags);
             return blogRepository.save(newBlog);
         }catch (Exception e){
+            ExceptionUtils.handleServiceExceptions(e);
+            return null;
+        }
+    }
+
+    @Override
+    public Blog createBlogByLoggedInUser(CreateBlogDTO blog) {
+        try {
+            User author= userService.getLoggedInUser();
+            Set<Category> categories=new HashSet<>();
+            Set<Tag> tags=new HashSet<>();
+            for (UUID categoryId:blog.getCategories()){
+                categories.add(categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category not found")));
+            }
+            for (UUID tagId:blog.getTags()){
+                tags.add(tagRepository.findById(tagId).orElseThrow(() -> new ResourceNotFoundException("Tag not found")));
+            }
+            Blog newBlog = new Blog(blog.getTitle(), blog.getContent(),author);
+            newBlog.setCategories(categories);
+            newBlog.setTags(tags);
+            return blogRepository.save(newBlog);
+        }catch (Exception e){
+            e.printStackTrace();
             ExceptionUtils.handleServiceExceptions(e);
             return null;
         }

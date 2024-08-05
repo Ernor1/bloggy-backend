@@ -18,7 +18,7 @@ import java.util.UUID;
 @Setter
 public class Blog extends Initializer {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     private String title;
@@ -26,12 +26,14 @@ public class Blog extends Initializer {
     @ManyToOne
     private User author;
     @OneToMany
+    @JsonIgnore
     private Set<Comment> comments;
     @ManyToMany(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinTable(name = "blog_categories", joinColumns = @JoinColumn(name = "blog_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories;
     @ManyToMany
+    @JsonIgnore
     @JoinTable(name = "blog_tags", joinColumns = @JoinColumn(name = "blog_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags;
     private boolean published;

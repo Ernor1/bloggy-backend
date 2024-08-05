@@ -22,6 +22,7 @@ public class CategoryServiceImpl implements ICategoryService {
             Category newCategory = new Category(category.getName(), category.getDescription());
             return categoryRepository.save(newCategory);
         }catch (Exception e){
+            e.printStackTrace();
             ExceptionUtils.handleServiceExceptions(e);
             return null;
         }

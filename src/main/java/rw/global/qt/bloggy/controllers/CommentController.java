@@ -45,8 +45,17 @@ public class CommentController {
             return ExceptionUtils.handleControllerExceptions(e);
         }
     }
+    @PostMapping("/createByLoggedInUser")
+    public ResponseEntity<ApiResponse> createCommentByLoggedInUser(@Valid @RequestBody CreateCommentDTO createCommentDTO){
+        logAction(String.format("Request for creating a Comment by logged in user with Content:  %s", createCommentDTO.getContent()));
+        try{
+            return ResponseEntity.ok(new ApiResponse(true,"Comment created successfully",commentService.createCommentByLoggedInUser(createCommentDTO)));
+        }catch (Exception e){
+            return ExceptionUtils.handleControllerExceptions(e);
+        }
+    }
     @GetMapping("/get/{id}")
-    public ResponseEntity<ApiResponse> getCommentById(@Valid @ValidUUID @PathVariable("id") UUID id){
+    public ResponseEntity<ApiResponse> getCommentById(  @PathVariable("id") UUID id){
         logAction(String.format("Request for getting a Comment with ID:  %s", id));
         try{
             return ResponseEntity.ok(new ApiResponse(true,"Comment fetched successfully",commentService.getCommentById(id)));
@@ -55,7 +64,7 @@ public class CommentController {
         }
     }
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<ApiResponse> deleteCommentById(@Valid @ValidUUID @PathVariable("id") UUID id){
+    public ResponseEntity<ApiResponse> deleteCommentById(  @PathVariable("id") UUID id){
         logAction(String.format("Request for deleting a Comment with ID:  %s", id));
         try{
             commentService.deleteComment(id);
@@ -65,7 +74,7 @@ public class CommentController {
         }
     }
     @PutMapping("/update/{id}")
-    public ResponseEntity<ApiResponse> updateComment(@Valid @ValidUUID @PathVariable("id") UUID id, @Valid @RequestBody CreateCommentDTO createCommentDTO){
+    public ResponseEntity<ApiResponse> updateComment(  @PathVariable("id") UUID id, @Valid @RequestBody CreateCommentDTO createCommentDTO){
         logAction(String.format("Request for updating a Comment with ID:  %s", id));
         try{
             return ResponseEntity.ok(new ApiResponse(true,"Comment updated successfully",commentService.updateComment(id, createCommentDTO)));
@@ -74,7 +83,7 @@ public class CommentController {
         }
     }
     @GetMapping("/getByBlog/{id}")
-    public ResponseEntity<ApiResponse> getCommentsByBlogId(@Valid @ValidUUID @PathVariable("id") UUID id){
+    public ResponseEntity<ApiResponse> getCommentsByBlogId( @PathVariable("id") UUID id){
         logAction(String.format("Request for getting all comments of a Blog with ID:  %s", id));
         try{
             return ResponseEntity.ok(new ApiResponse(true,"Comments fetched successfully",commentService.getCommentByBlog(id)));
@@ -83,7 +92,7 @@ public class CommentController {
         }
     }
     @GetMapping("/getByUser/{id}")
-    public ResponseEntity<ApiResponse> getCommentsByUserId(@Valid @ValidUUID @PathVariable("id") UUID id){
+    public ResponseEntity<ApiResponse> getCommentsByUserId(  @PathVariable("id") UUID id){
         logAction(String.format("Request for getting all comments of a User with ID:  %s", id));
         try{
             return ResponseEntity.ok(new ApiResponse(true,"Comments fetched successfully",commentService.getCommentByUser(id)));

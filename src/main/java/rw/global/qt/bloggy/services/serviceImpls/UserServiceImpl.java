@@ -74,8 +74,6 @@ public class UserServiceImpl  implements IUserService {
     public boolean validateUserEntry(Person user) {
         if (isNotUnique(user)) {
             String errorMessage = "The user with the email: " + user.getEmail() +
-                    "  or national id: " + user.getNationalId() +
-                    " or phone number: " + user.getPhoneNumber() + "" +
                     " already exists";
             throw new BadRequestException(errorMessage);
         } else {
@@ -109,7 +107,7 @@ public class UserServiceImpl  implements IUserService {
             if(userRepository.findUserByEmail(userDto.getEmail()).isPresent()){
                 throw new BadRequestException("Email already in use");
             }
-            User user1= new User(userDto.getFirstName(),userDto.getLastName(),userDto.getEmail(),userDto.getDateOfBirth(),userDto.getGender(),userDto.getPhoneNumber(),userDto.getNationalId(),userDto.getUsername(), Utility.generatedCode());
+            User user1= new User(userDto.getFirstName(),userDto.getLastName(),userDto.getEmail(),userDto.getUsername(), Utility.generatedCode());
             user1.setPassword(Hash.hashPassword(userDto.getPassword()));
 
             Set<Role> roles= new HashSet<>();
@@ -135,8 +133,8 @@ public class UserServiceImpl  implements IUserService {
             if(userRepository.findUserByEmail(userDto.getEmail()).isPresent()){
                 throw new BadRequestException("Email already in use");
             }
-            if(userDto.getAdminKey().equals("admin123")){
-                User user1= new User(userDto.getFirstName(),userDto.getLastName(),userDto.getEmail(),userDto.getDateOfBirth(),userDto.getGender(),userDto.getPhoneNumber(),userDto.getNationalId(),userDto.getUsername(),Utility.generatedCode());
+            if(userDto.getAdminKey().equals("KeyAdminKeyAdmin")){
+                User user1= new User(userDto.getFirstName(),userDto.getLastName(),userDto.getEmail(),userDto.getUsername(),Utility.generatedCode());
                 user1.setPassword(Hash.hashPassword(userDto.getPassword()));
                 Set<Role> roles= new HashSet<>();
                 roles.add(roleRepository.findByRoleName(Roles.ADMIN.toString()));

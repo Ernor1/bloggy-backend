@@ -8,6 +8,7 @@ import java.util.UUID;
 
 public interface ICommentService {
     public Comment createComment(CreateCommentDTO comment);
+    public Comment createCommentByLoggedInUser(CreateCommentDTO comment);
     public Comment getCommentById(UUID id);
     public Comment updateComment(UUID id, CreateCommentDTO comment);
     public void deleteComment(UUID id);

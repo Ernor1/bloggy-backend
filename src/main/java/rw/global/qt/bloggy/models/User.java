@@ -43,8 +43,8 @@ public class User extends Person {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<Role>();
-    public User(String firstName, String lastName, String email, LocalDate dob, EGender gender, String phoneNumber, String nationalId, String username, String activationCode) {
-        super(firstName, lastName, email,dob,gender, phoneNumber, nationalId);
+    public User(String firstName, String lastName, String email, String username, String activationCode) {
+        super(firstName, lastName, email);
         this.username = username;
         this.activationCode = activationCode;
     }

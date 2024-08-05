@@ -18,8 +18,6 @@ public class CreateCommentDTO {
     @NotNull
     @NotBlank(message = "Content is required")
     private String content;
-    @NotNull
-    @NotBlank(message = "User ID is required")
-    @ValidUUID
     private UUID userId;
+    private UUID blogId;
 }

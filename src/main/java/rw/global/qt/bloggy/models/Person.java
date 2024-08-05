@@ -34,16 +34,6 @@ public abstract class Person extends Initializer {
     private String email;
 
 
-    @Column(name = "dob")
-    private LocalDate dob;
-
-    private EGender gender;
-
-    @Column(name = "phone_number")
-    private String phoneNumber;
-
-    @Column(name = "national_id")
-    private String nationalId;
 
     @Enumerated(EnumType.STRING)
     @JsonIgnore
@@ -51,14 +41,11 @@ public abstract class Person extends Initializer {
 
 
 
-    public Person(String firstName, String lastName, String email, LocalDate dob, EGender gender, String phoneNumber, String nationalId){
+    public Person(String firstName, String lastName, String email){
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.dob = dob;
-        this.gender = gender;
-        this.phoneNumber = phoneNumber;
-        this.nationalId = nationalId;
+
     }
     //private User (After user creation)
 }

@@ -1,5 +1,6 @@
 package rw.global.qt.bloggy.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,11 +18,12 @@ import java.util.UUID;
 @Entity
 public class Tag extends Initializer {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private String name;
     private String description;
     @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Blog> blogs;
     public Tag(String name, String description){
         this.name = name;

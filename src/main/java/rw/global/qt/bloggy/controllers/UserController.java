@@ -27,10 +27,9 @@ import static rw.global.qt.bloggy.utils.helpers.Helper.logAction;
 public class UserController {
     private final UserServiceImpl userService;
     @PostMapping("/create")
-    @PreAuthorize("hasAuthority('ADMIN')  or hasAuthority('MANAGER')")
     public ResponseEntity<ApiResponse> createUser(@Valid @RequestBody CreateUserDTO createUserDTO, @RequestParam("role") Roles role) {
         try {
-            logAction(String.format("Request for creating a student with Full name :  %s , and email  :  %s", createUserDTO.getFirstName() + createUserDTO.getLastName() , createUserDTO.getEmail()));
+//            logAction(String.format("Request for creating a student with Full name :  %s , and email  :  %s", createUserDTO.getFirstName() + createUserDTO.getLastName() , createUserDTO.getEmail()));
             return ResponseEntity.ok().body(new ApiResponse(
                             true,
                             "User created successfully",

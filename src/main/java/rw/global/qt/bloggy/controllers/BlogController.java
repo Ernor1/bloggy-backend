@@ -29,7 +29,7 @@ public class BlogController {
     private final IBlogService blogService;
     @GetMapping("/all")
     public ResponseEntity<ApiResponse> findAll(){
-        logAction(String.format("Request for getting all blogs"));
+//        logAction(String.format("Request for getting all blogs"));
         try{
             return ResponseEntity.ok(new ApiResponse(true,"Blogs fetched successfully",blogService.getAllBlogs()));
         }catch (Exception e){
@@ -45,8 +45,17 @@ public class BlogController {
             return ExceptionUtils.handleControllerExceptions(e);
         }
     }
+    @PostMapping("/create/by-logged-in-user")
+    public ResponseEntity<ApiResponse> createBlogByLoggedInUser(@Valid @RequestBody CreateBlogDTO createBlogDTO){
+        logAction(String.format("Request for creating a Blog with Title:  %s", createBlogDTO.getTitle()));
+        try{
+            return ResponseEntity.ok(new ApiResponse(true,"Blog created successfully",blogService.createBlogByLoggedInUser(createBlogDTO)));
+        }catch (Exception e){
+            return ExceptionUtils.handleControllerExceptions(e);
+        }
+    }
     @GetMapping("/get/{id}")
-    public ResponseEntity<ApiResponse> getBlogById(@Valid @ValidUUID @PathVariable("id") UUID id){
+    public ResponseEntity<ApiResponse> getBlogById( @PathVariable("id") UUID id){
         logAction(String.format("Request for getting a Blog with ID:  %s", id));
         try{
             return ResponseEntity.ok(new ApiResponse(true,"Blog fetched successfully",blogService.getBlogById(id)));
@@ -55,7 +64,7 @@ public class BlogController {
         }
     }
     @GetMapping("/delete/{id}")
-    public ResponseEntity<ApiResponse> deleteBlogById(@Valid @ValidUUID @PathVariable("id") UUID id){
+    public ResponseEntity<ApiResponse> deleteBlogById(@PathVariable("id") UUID id){
         logAction(String.format("Request for deleting a Blog with ID:  %s", id));
         try{
             blogService.deleteBlog(id);
@@ -66,7 +75,7 @@ public class BlogController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ApiResponse> updateBlog(@Valid @ValidUUID @PathVariable("id") UUID id, @Valid @RequestBody CreateBlogDTO createBlogDTO){
+    public ResponseEntity<ApiResponse> updateBlog(@PathVariable("id") UUID id, @Valid @RequestBody CreateBlogDTO createBlogDTO){
         logAction(String.format("Request for updating a Blog with ID:  %s", id));
         try{
             return ResponseEntity.ok(new ApiResponse(true,"Blog updated successfully",blogService.updateBlog(id,createBlogDTO)));
@@ -75,7 +84,7 @@ public class BlogController {
         }
     }
     @GetMapping("/get/by-author/{id}")
-    public ResponseEntity<ApiResponse> getBlogsByAuthor(@Valid @ValidUUID @PathVariable("id") UUID id){
+    public ResponseEntity<ApiResponse> getBlogsByAuthor(@PathVariable("id") UUID id){
         logAction(String.format("Request for getting all blogs by author with ID:  %s", id));
         try{
             return ResponseEntity.ok(new ApiResponse(true,"Blogs fetched successfully",blogService.getBlogByAuthor(id)));
@@ -84,7 +93,7 @@ public class BlogController {
         }
     }
     @GetMapping("/get/by-category/{id}")
-    public ResponseEntity<ApiResponse> getBlogsByCategory(@Valid @ValidUUID @PathVariable("id") UUID id){
+    public ResponseEntity<ApiResponse> getBlogsByCategory(@PathVariable("id") UUID id){
         logAction(String.format("Request for getting all blogs by category with ID:  %s", id));
         try{
             return ResponseEntity.ok(new ApiResponse(true,"Blogs fetched successfully",blogService.getBlogByCategory(id)));
@@ -93,7 +102,7 @@ public class BlogController {
         }
     }
     @GetMapping("/get/by-tag/{id}")
-    public ResponseEntity<ApiResponse> getBlogsByTag(@Valid @ValidUUID @PathVariable("id") UUID id){
+    public ResponseEntity<ApiResponse> getBlogsByTag(@PathVariable("id") UUID id){
         logAction(String.format("Request for getting all blogs by tag with ID:  %s", id));
         try{
             return ResponseEntity.ok(new ApiResponse(true,"Blogs fetched successfully",blogService.getBlogByTag(id)));
@@ -102,7 +111,7 @@ public class BlogController {
         }
     }
     @GetMapping("/get/by-title/{title}")
-    public ResponseEntity<ApiResponse> getBlogsByTitle(@Valid @PathVariable("title") String title){
+    public ResponseEntity<ApiResponse> getBlogsByTitle( @PathVariable("title") String title){
         logAction(String.format("Request for getting all blogs by title:  %s", title));
         try{
             return ResponseEntity.ok(new ApiResponse(true,"Blogs fetched successfully",blogService.getBlogByTitle(title)));
@@ -111,7 +120,7 @@ public class BlogController {
         }
     }
     @GetMapping("/get/by-published/{published}")
-    public ResponseEntity<ApiResponse> getBlogsByPublished(@Valid @PathVariable("published") boolean published){
+    public ResponseEntity<ApiResponse> getBlogsByPublished( @PathVariable("published") boolean published){
         logAction(String.format("Request for getting all blogs by published:  %s", published));
         try{
             return ResponseEntity.ok(new ApiResponse(true,"Blogs fetched successfully",blogService.getBlogByPublished(published)));

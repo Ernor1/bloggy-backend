@@ -11,6 +11,7 @@ import rw.global.qt.bloggy.repositories.IBlogRepository;
 import rw.global.qt.bloggy.repositories.ICommentRepository;
 import rw.global.qt.bloggy.repositories.IUserRepository;
 import rw.global.qt.bloggy.services.ICommentService;
+import rw.global.qt.bloggy.services.IUserService;
 import rw.global.qt.bloggy.utils.ExceptionUtils;
 
 import java.util.List;
@@ -22,11 +23,13 @@ public class CommentServiceImpl implements ICommentService {
     private final ICommentRepository commentRepository;
     private final IUserRepository userRepository;
     private final IBlogRepository blogRepository;
+    private final IUserService userService;
     @Override
     public Comment createComment(CreateCommentDTO comment) {
         try{
             User user = userRepository.findById(comment.getUserId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-            Comment newComment = new Comment(comment.getContent(), user);
+            Blog blog = blogRepository.findById(comment.getBlogId()).orElseThrow(() -> new ResourceNotFoundException("Blog not found"));
+            Comment newComment = new Comment(comment.getContent(), user,blog);
             return commentRepository.save(newComment);
         }catch (Exception e){
             ExceptionUtils.handleServiceExceptions(e);
@@ -34,6 +37,19 @@ public class CommentServiceImpl implements ICommentService {
         }
 
     }
+
+    @Override
+    public Comment createCommentByLoggedInUser(CreateCommentDTO comment) {
+        try{
+            User user =userService.getLoggedInUser();
+            Blog blog = blogRepository.findById(comment.getBlogId()).orElseThrow(() -> new ResourceNotFoundException("Blog not found"));
+            Comment newComment = new Comment(comment.getContent(), user,blog);
+            return commentRepository.save(newComment);
+        }catch (Exception e){
+            ExceptionUtils.handleServiceExceptions(e);
+            e.printStackTrace();
+            return null;
+    }}
 
     @Override
     public Comment getCommentById(UUID id) {

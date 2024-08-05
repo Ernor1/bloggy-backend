@@ -47,7 +47,14 @@ public class SecurityConfig {
                         "/api/v1/importing/**",
                         "/api/v1/location",
                         "/api/v1/roles/**",
-                        "/api/v1/customers/**"
+                        "/api/v1/users/**",
+                        "/api/v1/category/all",
+                        "/api/v1/tag/all",
+                        "/api/v1/blog/all",
+                        "/api/v1/comment/all/**",
+                        "/api/v1/comment/getByBlog/**",
+                        "/api/v1/blog/get/**"
+
                 )
                 .permitAll()
                 .antMatchers(

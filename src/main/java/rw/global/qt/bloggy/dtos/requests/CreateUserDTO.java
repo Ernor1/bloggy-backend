@@ -35,16 +35,6 @@ public class CreateUserDTO {
     @NotNull
     @NotBlank(message = "Password is mandatory")
     private String password;
-    @Pattern(regexp = "^\\d{10}$", message = "Telephone number must be exactly 10 digits")
-    private String phoneNumber;
-    @Pattern(regexp = "^\\d{16}$", message = "National ID must be exactly 16 digits")
-    private String nationalId;
-    @NotNull(message = "Date of birth is mandatory")
-    @ValidDateOfBirth
-    private LocalDate dateOfBirth;
 
-    @NotNull
-    @ValidGender
-    private EGender gender;
 
 }
