@@ -3,6 +3,7 @@ package rw.global.qt.bloggy.controllers;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -37,6 +38,7 @@ public class CategoryController {
         }
     }
     @GetMapping("all/by-blog/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'AUTHOR','USER')")
     public ResponseEntity<ApiResponse> findAllByBlog(@PathVariable("id") UUID id){
         logAction(String.format("Request for getting all categories by Blog ID:  %s", id));
         try{
@@ -46,6 +48,7 @@ public class CategoryController {
         }
     }
     @PostMapping("/create")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<ApiResponse> createCategory(@Valid @RequestBody CreateCategoryDTO createCategoryDTO){
         logAction(String.format("Request for creating a Category with Name:  %s", createCategoryDTO.getName()));
         try{
@@ -55,6 +58,7 @@ public class CategoryController {
         }
     }
     @GetMapping("/get/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'AUTHOR','USER')")
     public ResponseEntity<ApiResponse> getCategoryById(@Valid @ValidUUID @PathVariable("id") UUID id){
         logAction(String.format("Request for getting a Category with ID:  %s", id));
         try{
@@ -64,6 +68,7 @@ public class CategoryController {
         }
     }
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<ApiResponse> deleteCategoryById(@Valid @ValidUUID @PathVariable("id") UUID id){
         logAction(String.format("Request for deleting a Category with ID:  %s", id));
         try{
@@ -73,6 +78,7 @@ public class CategoryController {
         }
     }
     @PutMapping("/update/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<ApiResponse> updateCategoryById(@Valid @ValidUUID @PathVariable("id") UUID id, @Valid @RequestBody CreateCategoryDTO updateCategoryDTO){
         logAction(String.format("Request for updating a Category with ID:  %s", id));
         try{

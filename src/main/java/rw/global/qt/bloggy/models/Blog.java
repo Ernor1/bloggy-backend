@@ -23,6 +23,7 @@ public class Blog extends Initializer {
 
     private String title;
     private String content;
+    private String image;
     @ManyToOne
     private User author;
     @OneToMany(mappedBy = "blog",fetch = FetchType.LAZY,cascade = CascadeType.ALL)

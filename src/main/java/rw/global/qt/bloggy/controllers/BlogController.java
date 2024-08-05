@@ -3,10 +3,12 @@ package rw.global.qt.bloggy.controllers;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import rw.global.qt.bloggy.annotations.ValidUUID;
 import rw.global.qt.bloggy.dtos.requests.CreateBlogDTO;
 import rw.global.qt.bloggy.payload.ApiResponse;
@@ -37,19 +39,21 @@ public class BlogController {
         }
     }
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse> createBlog(@Valid @RequestBody CreateBlogDTO createBlogDTO){
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'AUTHOR','USER')")
+    public ResponseEntity<ApiResponse> createBlog(@Valid @RequestBody CreateBlogDTO createBlogDTO,@RequestParam("file") MultipartFile file){
         logAction(String.format("Request for creating a Blog with Title:  %s", createBlogDTO.getTitle()));
         try{
-            return ResponseEntity.ok(new ApiResponse(true,"Blog created successfully",blogService.createBlog(createBlogDTO)));
+            return ResponseEntity.ok(new ApiResponse(true,"Blog created successfully",blogService.createBlog(createBlogDTO,file)));
         }catch (Exception e){
             return ExceptionUtils.handleControllerExceptions(e);
         }
     }
     @PostMapping("/create/by-logged-in-user")
-    public ResponseEntity<ApiResponse> createBlogByLoggedInUser(@Valid @RequestBody CreateBlogDTO createBlogDTO){
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'AUTHOR','USER')")
+    public ResponseEntity<ApiResponse> createBlogByLoggedInUser( @ModelAttribute CreateBlogDTO createBlogDTO,@RequestParam("file") MultipartFile file){
         logAction(String.format("Request for creating a Blog with Title:  %s", createBlogDTO.getTitle()));
         try{
-            return ResponseEntity.ok(new ApiResponse(true,"Blog created successfully",blogService.createBlogByLoggedInUser(createBlogDTO)));
+            return ResponseEntity.ok(new ApiResponse(true,"Blog created successfully",blogService.createBlogByLoggedInUser(createBlogDTO,file)));
         }catch (Exception e){
             return ExceptionUtils.handleControllerExceptions(e);
         }
@@ -64,6 +68,7 @@ public class BlogController {
         }
     }
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'AUTHOR','USER')")
     public ResponseEntity<ApiResponse> deleteBlogById(@PathVariable("id") UUID id){
         logAction(String.format("Request for deleting a Blog with ID:  %s", id));
         try{
@@ -75,15 +80,17 @@ public class BlogController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ApiResponse> updateBlog(@PathVariable("id") UUID id, @Valid @RequestBody CreateBlogDTO createBlogDTO){
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'AUTHOR','USER')")
+    public ResponseEntity<ApiResponse> updateBlog(@PathVariable("id") UUID id, @Valid @RequestBody CreateBlogDTO createBlogDTO,@RequestParam("file") MultipartFile file){
         logAction(String.format("Request for updating a Blog with ID:  %s", id));
         try{
-            return ResponseEntity.ok(new ApiResponse(true,"Blog updated successfully",blogService.updateBlog(id,createBlogDTO)));
+            return ResponseEntity.ok(new ApiResponse(true,"Blog updated successfully",blogService.updateBlog(id,createBlogDTO,file)));
         }catch (Exception e){
             return ExceptionUtils.handleControllerExceptions(e);
         }
     }
     @GetMapping("/get/by-author/{name}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'AUTHOR','USER')")
     public ResponseEntity<ApiResponse> getBlogsByAuthor(@PathVariable("name")  String name){
         logAction(String.format("Request for getting all blogs by author with ID:  %s", name));
         try{
@@ -112,7 +119,7 @@ public class BlogController {
     }
     @GetMapping("/get/by-title/{title}")
     public ResponseEntity<ApiResponse> getBlogsByTitle( @PathVariable("title") String title){
-        logAction(String.format("Request for getting all blogs by title:  %s", title));
+//        logAction(String.format("Request for getting all blogs by title:  %s", title));
         try{
             return ResponseEntity.ok(new ApiResponse(true,"Blogs fetched successfully",blogService.getBlogByTitle(title)));
         }catch (Exception e){
@@ -121,7 +128,7 @@ public class BlogController {
     }
     @GetMapping("/get/by-published/{published}")
     public ResponseEntity<ApiResponse> getBlogsByPublished( @PathVariable("published") boolean published){
-        logAction(String.format("Request for getting all blogs by published:  %s", published));
+//        logAction(String.format("Request for getting all blogs by published:  %s", published));
         try{
             return ResponseEntity.ok(new ApiResponse(true,"Blogs fetched successfully",blogService.getBlogByPublished(published)));
         }catch (Exception e){

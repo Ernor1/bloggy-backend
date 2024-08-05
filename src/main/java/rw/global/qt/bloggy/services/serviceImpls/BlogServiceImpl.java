@@ -1,8 +1,11 @@
 package rw.global.qt.bloggy.services.serviceImpls;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import rw.global.qt.bloggy.dtos.requests.CreateBlogDTO;
 import rw.global.qt.bloggy.exceptions.ResourceNotFoundException;
 import rw.global.qt.bloggy.models.Blog;
@@ -17,10 +20,7 @@ import rw.global.qt.bloggy.services.IBlogService;
 import rw.global.qt.bloggy.services.IUserService;
 import rw.global.qt.bloggy.utils.ExceptionUtils;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -31,8 +31,9 @@ public class BlogServiceImpl implements IBlogService {
     private final ICategoryRepository categoryRepository;
     private final ITagRepository tagRepository;
     private final IUserService userService;
+    private final Cloudinary cloudinary;
     @Override
-    public Blog createBlog(CreateBlogDTO blog) {
+    public Blog createBlog(CreateBlogDTO blog, MultipartFile file) {
         try {
             User author = userRepository.findById(blog.getUserId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
             Set<Category> categories= new HashSet<>();
@@ -44,6 +45,13 @@ public class BlogServiceImpl implements IBlogService {
                 tags.add(tagRepository.findById(tagId).orElseThrow(() -> new ResourceNotFoundException("Tag not found")));
             }
             Blog newBlog = new Blog(blog.getTitle(), blog.getContent(),author);
+            if(file!=null){
+                Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+                String imageUrl = uploadResult.get("url").toString();
+                newBlog.setImage(imageUrl);
+
+            }
+
             newBlog.setCategories(categories);
             newBlog.setTags(tags);
             return blogRepository.save(newBlog);
@@ -54,7 +62,7 @@ public class BlogServiceImpl implements IBlogService {
     }
 
     @Override
-    public Blog createBlogByLoggedInUser(CreateBlogDTO blog) {
+    public Blog createBlogByLoggedInUser(CreateBlogDTO blog,MultipartFile file) {
         try {
             User author= userService.getLoggedInUser();
             Set<Category> categories=new HashSet<>();
@@ -66,6 +74,11 @@ public class BlogServiceImpl implements IBlogService {
                 tags.add(tagRepository.findById(tagId).orElseThrow(() -> new ResourceNotFoundException("Tag not found")));
             }
             Blog newBlog = new Blog(blog.getTitle(), blog.getContent(),author);
+            if(file!=null){
+                Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+                String imageUrl = uploadResult.get("url").toString();
+                newBlog.setImage(imageUrl);
+            }
             newBlog.setCategories(categories);
             newBlog.setTags(tags);
             return blogRepository.save(newBlog);
@@ -86,11 +99,17 @@ public class BlogServiceImpl implements IBlogService {
         }
     }
     @Override
-    public Blog updateBlog(UUID id, CreateBlogDTO blog) {
+    public Blog updateBlog(UUID id, CreateBlogDTO blog,MultipartFile file) {
        try {
               Blog blogToUpdate = blogRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Blog not found"));
               blogToUpdate.setTitle(blog.getTitle());
               blogToUpdate.setContent(blog.getContent());
+           if(file!=null){
+               Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+               String imageUrl = uploadResult.get("url").toString();
+               blogToUpdate.setImage(imageUrl);
+
+           }
               return blogRepository.save(blogToUpdate);
        }catch (Exception e){
            ExceptionUtils.handleServiceExceptions(e);

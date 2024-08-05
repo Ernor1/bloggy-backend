@@ -102,48 +102,52 @@ public class BlogStarterApplication {
     @Bean
     public void defaultCategories() {
         try {
-
             Set<Category> categories = new HashSet<>();
-            Category category = new Category("Technology", "Technology");
-            categories.add(category);
-            Category category1 = new Category("Health", "Health");
-            categories.add(category1);
-            Category category2 = new Category("Business", "Business");
-            categories.add(category2);
-            Category category3 = new Category("Entertainment", "Entertainment");
-            categories.add(category3);
-            Category category4 = new Category("Politics", "Politics");
-            categories.add(category4);
-            Category category5 = new Category("Sports", "Sports");
-            categories.add(category5);
-            for (Category category6 : categories) {
-                if (categoryRepository.findByName(category6.getName()).isEmpty()) {
-                    categoryRepository.save(category6);
+            categories.add(new Category("Technology", "Posts about the latest technology trends and innovations."));
+            categories.add(new Category("Health & Wellness", "Articles on physical health, mental wellness, and healthy living."));
+            categories.add(new Category("Business & Finance", "Insights on business strategies, financial planning, and economic trends."));
+            categories.add(new Category("Entertainment", "Content related to movies, music, games, and other forms of entertainment."));
+            categories.add(new Category("Politics", "Discussions on political news, policies, and global affairs."));
+            categories.add(new Category("Sports", "Updates and commentary on various sports events and activities."));
+            categories.add(new Category("Lifestyle", "Topics related to personal lifestyle, fashion, and daily living tips."));
+            categories.add(new Category("Travel", "Guides and experiences related to traveling, destinations, and adventures."));
+            categories.add(new Category("Food & Drink", "Recipes, food reviews, and beverage recommendations."));
+            categories.add(new Category("Personal Development", "Advice and tips on personal growth, skills development, and self-improvement."));
+
+            for (Category category : categories) {
+                if (categoryRepository.findByName(category.getName()).isEmpty()) {
+                    categoryRepository.save(category);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
+
     @Bean
-    public void defaultTags(){
+    public void defaultTags() {
         try {
-            Set<Tag> tags= new HashSet<>();
-            tags.add(new Tag("Technology","Technology"));
-            tags.add(new Tag("Health","Health"));
-            tags.add(new Tag("Business","Business"));
-            tags.add(new Tag("Entertainment","Entertainment"));
-            tags.add(new Tag("Politics","Politics"));
-            tags.add(new Tag("Sports","Sports"));
-            for (Tag tag: tags){
-                if(tagRepository.findByName(tag.getName()).isEmpty()){
+            Set<Tag> tags = new HashSet<>();
+            tags.add(new Tag("Artificial Intelligence", "Posts about advancements and trends in AI technology."));
+            tags.add(new Tag("Mental Health", "Articles focused on mental health issues, wellness practices, and support."));
+            tags.add(new Tag("Startups", "Insights and stories about new businesses and entrepreneurial ventures."));
+            tags.add(new Tag("Movies", "Reviews and discussions about films and cinematic experiences."));
+            tags.add(new Tag("Elections", "Coverage of electoral processes, candidates, and political campaigns."));
+            tags.add(new Tag("Soccer", "News and updates related to soccer events and teams."));
+            tags.add(new Tag("Self-Care", "Tips and advice on self-care routines and practices for personal well-being."));
+            tags.add(new Tag("Adventure", "Content related to adventurous activities, exploration, and travel experiences."));
+            tags.add(new Tag("Recipes", "Cooking tips, recipes, and food preparation guides."));
+            tags.add(new Tag("Productivity", "Strategies and advice on improving efficiency and productivity in personal and professional life."));
+
+            for (Tag tag : tags) {
+                if (tagRepository.findByName(tag.getName()).isEmpty()) {
                     tagRepository.save(tag);
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
 }

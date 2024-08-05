@@ -3,6 +3,7 @@ package rw.global.qt.bloggy.controllers;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -37,6 +38,7 @@ public class TagController {
         }
     }
     @GetMapping("all/by-blog/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'AUTHOR','USER')")
     public ResponseEntity<ApiResponse> findAllByBlog(@PathVariable("id") UUID id){
         logAction(String.format("Request for getting all tags by Blog ID:  %s", id));
         try{
@@ -46,6 +48,7 @@ public class TagController {
         }
     }
     @PostMapping("/create")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<ApiResponse> createTag(@Valid @RequestBody CreateTagDTO createTagDTO){
         logAction(String.format("Request for creating a Tag with Name:  %s", createTagDTO.getName()));
         try{
@@ -55,6 +58,7 @@ public class TagController {
         }
     }
     @GetMapping("/get/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'AUTHOR','USER')")
     public ResponseEntity<ApiResponse> getTagById(@Valid @ValidUUID @PathVariable("id") UUID id){
         logAction(String.format("Request for getting a Tag with ID:  %s", id));
         try{
@@ -64,6 +68,7 @@ public class TagController {
         }
     }
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<ApiResponse> deleteTagById(@Valid @ValidUUID @PathVariable("id") UUID id){
         logAction(String.format("Request for deleting a Tag with ID:  %s", id));
         try{
@@ -74,6 +79,7 @@ public class TagController {
         }
     }
     @PutMapping("/update/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<ApiResponse> updateTag(@Valid @ValidUUID @PathVariable("id") UUID id, @Valid @RequestBody CreateTagDTO createTagDTO){
         logAction(String.format("Request for updating a Tag with ID:  %s", id));
         try{
