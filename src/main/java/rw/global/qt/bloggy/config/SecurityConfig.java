@@ -26,7 +26,7 @@ public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
     private final UserSecurityDetailsService userSecurityDetailsService;
     private final CustomAuthError customAuthError;
-
+// setting up request authorization and filtering
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http

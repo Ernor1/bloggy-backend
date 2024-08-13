@@ -60,7 +60,7 @@ public class BlogStarterApplication {
             }
         }
     }
-
+// Registering Default Admin for testing
     @Bean
     public void registerDefaultAdmin() {
         try {
@@ -80,7 +80,7 @@ public class BlogStarterApplication {
             ExceptionUtils.handleServiceExceptions(e);
         }
     }
-
+// Registering Default user for testing
     @Bean
     public void registerDefaultUser() {
         try {
@@ -98,7 +98,7 @@ public class BlogStarterApplication {
             e.printStackTrace();
         }
     }
-
+    // Registering Default categories for testing
     @Bean
     public void defaultCategories() {
         try {
@@ -123,7 +123,7 @@ public class BlogStarterApplication {
             e.printStackTrace();
         }
     }
-
+    // Registering Default tags  for testing
     @Bean
     public void defaultTags() {
         try {
